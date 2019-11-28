@@ -35,6 +35,6 @@ Route.group(() => {
 .namespace('Admin')
 
 
-Route.get('/', ({ response }) => {
+Route.get('/secretAPIv1GCOMJACK', ({ response }) => {
   response.redirect('/docs')
 })
