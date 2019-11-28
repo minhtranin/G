@@ -10,7 +10,7 @@ class LabController{
       * /api/v1/lab/create:
       *   post:
       *     tags:
-      *       - LAB_Auth
+      *       - auth1
       *     summary: Create New a Lab
       *     security:
       *       - Bearer: []
@@ -61,7 +61,7 @@ class LabController{
       * /api/v1/lab/list:
       *   get:
       *     tags:
-      *       - LAB_Auth
+      *       - auth1
       *     summary: List Labs
       *     security:
       *       - Bearer: []
@@ -88,7 +88,7 @@ class LabController{
       * /api/v1/lab/find:
       *   get:
       *     tags:
-      *       - LAB_Auth
+      *       - auth1
       *     summary: Find a Lab
       *     security:
       *       - Bearer: []
@@ -118,7 +118,7 @@ class LabController{
       * /api/v1/lab/update:
       *   put:
       *     tags:
-      *       - LAB_Auth
+      *       - auth1
       *     summary: Update a Lab.
       *     security:
       *       - Bearer: []
@@ -155,7 +155,7 @@ class LabController{
       * /api/v1/lab/delete:
       *   delete:
       *     tags:
-      *       - LAB_Auth
+      *       - auth1
       *     summary: Delete a Lab
       *     security:
       *       - Bearer: []

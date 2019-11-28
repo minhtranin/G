@@ -10,7 +10,7 @@ class DoctorController {
    * /api/v1/doctor/register:
    *   post:
    *     tags:
-   *       - Docter_Auth
+   *       - CustomerAuth
    *     summary: register account
    *     parameters:
    *       - name: info
@@ -83,7 +83,7 @@ class DoctorController {
    * /api/v1/doctor/login:
    *   post:
    *     tags:
-   *       - Docter_Auth
+   *       - CustomerAuth
    *     summary: login  doctor
    *     parameters:
    *       - name: info
@@ -141,7 +141,7 @@ class DoctorController {
    * /api/v1/doctor/verifyEmail/{uid}:
    *   get:
    *     tags:
-   *       - Docter_Auth
+   *       - CustomerAuth
    *     summary: verifyEmail
    *     parameters:
    *       - name: uid
