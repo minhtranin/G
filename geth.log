@@ -1,0 +1,64 @@
+INFO [07-06|12:05:59.094] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [07-06|12:05:59.108] Starting peer-to-peer node               instance=Geth/v1.8.27-stable/darwin-amd64/go1.12.4
+INFO [07-06|12:05:59.108] Allocated cache and file handles         database=/Users/mac/Library/Ethereum/geth/chaindata cache=512 handles=5120
+INFO [07-06|12:05:59.524] Initialised chain configuration          config="{ChainID: 1 Homestead: 1150000 DAO: 1920000 DAOSupport: true EIP150: 2463000 EIP155: 2675000 EIP158: 2675000 Byzantium: 4370000 Constantinople: 7280000  ConstantinopleFix: 7280000 Engine: ethash}"
+INFO [07-06|12:05:59.524] Disk storage enabled for ethash caches   dir=/Users/mac/Library/Ethereum/geth/ethash count=3
+INFO [07-06|12:05:59.524] Disk storage enabled for ethash DAGs     dir=/Users/mac/.ethash                      count=2
+INFO [07-06|12:05:59.526] Initialising Ethereum protocol           versions="[63 62]" network=1
+INFO [07-06|12:05:59.597] Loaded most recent local header          number=1952408 hash=5da828…3a7d61 td=41424156430281657899 age=2y11mo3w
+INFO [07-06|12:05:59.597] Loaded most recent local full block      number=0       hash=d4e567…cb8fa3 td=17179869184          age=50y2mo3w
+INFO [07-06|12:05:59.597] Loaded most recent local fast block      number=1938211 hash=a8483a…62938e td=40574737775627234104 age=2y11mo3w
+INFO [07-06|12:05:59.599] Loaded local transaction journal         transactions=0 dropped=0
+INFO [07-06|12:05:59.599] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [07-06|12:05:59.686] New local node record                    seq=83 id=7e16dfe3ecf5ac2a ip=127.0.0.1 udp=30303 tcp=30303
+INFO [07-06|12:05:59.686] Started P2P networking                   self=enode://5c69ec12f18975fa2bb76922f3e47501d25fc98caca780492036601b8fae3cfb1032089ca1c57653a64f5571c7fc526ba7b304645277c7cd596832c5f301ce00@127.0.0.1:30303
+INFO [07-06|12:05:59.689] IPC endpoint opened                      url=/Users/mac/Library/Ethereum/geth.ipc
+INFO [07-06|12:05:59.689] Transaction pool price threshold updated price=1000000000
+INFO [07-06|12:05:59.689] Updated mining threads                   threads=0
+INFO [07-06|12:05:59.689] Transaction pool price threshold updated price=1000000000
+INFO [07-06|12:05:59.693] Commit new mining work                   number=1       sealhash=3be546…7c9666 uncles=0 txs=0 gas=0 fees=0 elapsed=3.698ms
+INFO [07-06|12:06:05.294] Got interrupt, shutting down... 
+INFO [07-06|12:06:05.294] IPC endpoint closed                      url=/Users/mac/Library/Ethereum/geth.ipc
+INFO [07-06|12:06:05.294] Blockchain manager stopped 
+INFO [07-06|12:06:05.294] Stopping Ethereum protocol 
+INFO [07-06|12:06:05.294] Ethereum protocol stopped 
+INFO [07-06|12:06:05.294] Transaction pool stopped 
+INFO [07-06|12:06:05.296] Database closed                          database=/Users/mac/Library/Ethereum/geth/chaindata
+INFO [07-06|12:18:41.212] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [07-06|12:18:41.228] Starting peer-to-peer node               instance=Geth/v1.8.27-stable/darwin-amd64/go1.12.4
+INFO [07-06|12:18:41.228] Allocated cache and file handles         database=/Users/mac/blockchain/geth/chaindata cache=512 handles=5120
+INFO [07-06|12:18:41.281] Writing default main-net genesis block 
+INFO [07-06|12:18:41.616] Persisted trie from memory database      nodes=12356 size=1.88mB time=69.85689ms gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [07-06|12:18:41.616] Initialised chain configuration          config="{ChainID: 1 Homestead: 1150000 DAO: 1920000 DAOSupport: true EIP150: 2463000 EIP155: 2675000 EIP158: 2675000 Byzantium: 4370000 Constantinople: 7280000  ConstantinopleFix: 7280000 Engine: ethash}"
+INFO [07-06|12:18:41.616] Disk storage enabled for ethash caches   dir=/Users/mac/blockchain/geth/ethash count=3
+INFO [07-06|12:18:41.616] Disk storage enabled for ethash DAGs     dir=/Users/mac/.ethash                count=2
+INFO [07-06|12:18:41.617] Initialising Ethereum protocol           versions="[63 62]" network=1
+INFO [07-06|12:18:41.634] Loaded most recent local header          number=0 hash=d4e567…cb8fa3 td=17179869184 age=50y2mo3w
+INFO [07-06|12:18:41.634] Loaded most recent local full block      number=0 hash=d4e567…cb8fa3 td=17179869184 age=50y2mo3w
+INFO [07-06|12:18:41.634] Loaded most recent local fast block      number=0 hash=d4e567…cb8fa3 td=17179869184 age=50y2mo3w
+INFO [07-06|12:18:41.635] Regenerated local transaction journal    transactions=0 accounts=0
+Fatal: Error starting protocol stack: listen tcp :30303: bind: address already in use
+INFO [07-06|12:18:59.831] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [07-06|12:18:59.843] Starting peer-to-peer node               instance=Geth/v1.8.27-stable/darwin-amd64/go1.12.4
+INFO [07-06|12:18:59.843] Allocated cache and file handles         database=/Users/mac/blockchain/geth/chaindata cache=512 handles=5120
+INFO [07-06|12:18:59.962] Initialised chain configuration          config="{ChainID: 1 Homestead: 1150000 DAO: 1920000 DAOSupport: true EIP150: 2463000 EIP155: 2675000 EIP158: 2675000 Byzantium: 4370000 Constantinople: 7280000  ConstantinopleFix: 7280000 Engine: ethash}"
+INFO [07-06|12:18:59.962] Disk storage enabled for ethash caches   dir=/Users/mac/blockchain/geth/ethash count=3
+INFO [07-06|12:18:59.963] Disk storage enabled for ethash DAGs     dir=/Users/mac/.ethash                count=2
+INFO [07-06|12:18:59.963] Initialising Ethereum protocol           versions="[63 62]" network=1
+INFO [07-06|12:19:00.037] Loaded most recent local header          number=0 hash=d4e567…cb8fa3 td=17179869184 age=50y2mo3w
+INFO [07-06|12:19:00.037] Loaded most recent local full block      number=0 hash=d4e567…cb8fa3 td=17179869184 age=50y2mo3w
+INFO [07-06|12:19:00.037] Loaded most recent local fast block      number=0 hash=d4e567…cb8fa3 td=17179869184 age=50y2mo3w
+INFO [07-06|12:19:00.038] Loaded local transaction journal         transactions=0 dropped=0
+INFO [07-06|12:19:00.038] Regenerated local transaction journal    transactions=0 accounts=0
+INFO [07-06|12:19:00.101] New local node record                    seq=1 id=4c85c9642844d137 ip=127.0.0.1 udp=30303 tcp=30303
+INFO [07-06|12:19:00.102] Started P2P networking                   self=enode://7a8b67c6fb51dc22e4c0fa172b743f8b3dbdf7b5dda317102c2df118b74274780d1d635f968f8cd92f1117653d451d7a53111da46ae97b54dc2daece9ce5a338@127.0.0.1:30303
+INFO [07-06|12:19:00.104] IPC endpoint opened                      url=/Users/mac/blockchain/geth.ipc
+INFO [07-06|12:19:00.107] HTTP endpoint opened                     url=http://localhost:8545          cors=* vhosts=localhost
+INFO [07-06|12:20:18.449] New local node record                    seq=2 id=4c85c9642844d137 ip=27.65.20.107 udp=30303 tcp=30303
+INFO [07-06|12:20:26.850] HTTP endpoint closed                     url=http://localhost:8545
+INFO [07-06|12:20:26.850] IPC endpoint closed                      url=/Users/mac/blockchain/geth.ipc
+INFO [07-06|12:20:26.850] Blockchain manager stopped 
+INFO [07-06|12:20:26.850] Stopping Ethereum protocol 
+INFO [07-06|12:20:26.850] Ethereum protocol stopped 
+INFO [07-06|12:20:26.851] Transaction pool stopped 
+INFO [07-06|12:20:26.851] Database closed                          database=/Users/mac/blockchain/geth/chaindata
