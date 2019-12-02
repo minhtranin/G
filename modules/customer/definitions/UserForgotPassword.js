@@ -8,7 +8,7 @@
 *      properties:
 *        email:
 *          type: string
-*          example : "nguyentandat43@gmail.com"
+*          example : "minhtc97@gmail.com"
 *      required:
 *        - email
 */

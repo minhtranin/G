@@ -18,9 +18,6 @@
 *        password:
 *          type: string
 *          example : "123456"
-*        sponsorKey:
-*          type: string
-*          example : "abcdqwerascnhr"
 *        phone_number:
 *          type: string
 *          example : "0971725797"

@@ -8,16 +8,16 @@
 *      properties:
 *        first_name:
 *          type: string
-*          example : "IcareBase"
+*          example : "gcom"
 *        last_name:
 *          type: string
-*          example : "IcareBase"
+*          example : "gcom"
 *        phone_number:
 *          type: string
 *          example : "0388912345"
 *        email:
 *          type: string
-*          example : "icarebase@gmail.com"
+*          example : "gcom@gmail.com"
 *        password:
 *          type: string
 *          example : "123456"

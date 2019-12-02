@@ -182,29 +182,14 @@ class AuthController {
         validation.messages()
       );
     }
-    const sponsorKey = await Customer.query()
-      .where("sponsorKey", data.sponsorKey)
-      .first();
-    var sponsorId;
-    var sponsorIdSetting = await Setting.query()
-      .where("skey", "sponsor_id")
-      .first();
-    if (!sponsorIdSetting) {
-      sponsorId = 1;
-    } else {
-      sponsorId = sponsorIdSetting.value;
-    }
-    if (sponsorKey) {
-      sponsorId = sponsorKey.id;
-    }
+    
     const trx = await Database.beginTransaction();
     const customer = new Customer();
     customer.first_name = data.first_name;
     customer.last_name = data.last_name;
     customer.email = data.email;
     customer.password = await Hash.make(data.password);
-    customer.sponsorKey = Helpers.generateKeySponsor();
-    customer.sponsor_id = sponsorId;
+  
     customer.phone_number = data.phone_number;
     customer.customer_code = Helpers.customerCode();
     customer.country = data.country;

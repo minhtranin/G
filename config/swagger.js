@@ -57,13 +57,12 @@ module.exports = {
     //    'docs/**/*.js',     // load recursive all .js file in docs directory
     // ]
     apis: [
-      'app/**/*.js',
+      'modules/admin/src/controllers/http/AuthController.js',
+      'modules/customer/src/controllers/http/AuthController.js',
       'app/Definitions/**/*.js',
       'start/routes.js',
-      'modules/*/src/controllers/http/*.js',
       'modules/*/definitions/**/*.js',
-      'modules/*/src/http/controllers/*.js',
-      'modules/*/src/Http/Controllers/*.js'
+      
     ]
   }
 }

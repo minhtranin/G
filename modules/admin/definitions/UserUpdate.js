@@ -11,7 +11,7 @@
 *          example : 1
 *        first_name:
 *          type: string
-*          example : "IcareBase"
+*          example : "gcom"
 *        last_name:
 *          type: string
 *          example : "IcareBase"
@@ -20,7 +20,7 @@
 *          example : "0388912345"
 *        email:
 *          type: string
-*          example : "icarebase@gmail.com"
+*          example : "sds@gmail.com"
 *        password:
 *          type: string
 *          example : "123456"
