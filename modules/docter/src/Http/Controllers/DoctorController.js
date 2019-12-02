@@ -1,6 +1,6 @@
 "use strict";
 const { validate } = use("Validator");
-const Doctor = use("TTSoft/Docter/Models/Doctor");
+const Customer = use("App/Models/Customer");
 const Helper = use("TTSoft/Docter/Helpers/Helpers");
 
 const Hash = use("Hash");
@@ -24,7 +24,8 @@ class DoctorController {
    *              email : 'minhtc97@gmail.com',
    *              password : '123',
    *              dob : '1997-11-29',
-   *              address : 'Q9 HCM'
+   *              address : 'Q9 HCM',
+   *              phone:'0971725797'
    *           }
    *     responses:
    *       200:
@@ -39,7 +40,8 @@ class DoctorController {
       email: "required|email|unique:doctors",
       password: "required",
       dob: "required",
-      address: "required"
+      address: "required",
+      phone:"required",
     };
     const validation = await validate(request.all(), rules);
     if (validation.fails()) {

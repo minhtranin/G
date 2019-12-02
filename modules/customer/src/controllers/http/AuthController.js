@@ -21,7 +21,7 @@ class AuthController {
    * /api/v1/login:
    *   post:
    *     tags:
-   *       - FE_Authenticate
+   *       - Customer Auth
    *     summary: Auth Login
    *     description: User Login
    *     produces:
@@ -123,7 +123,7 @@ class AuthController {
    * /api/v1/logout:
    *   get:
    *     tags:
-   *       - FE_Authenticate
+   *       - Customer Auth
    *     summary: User Logout
    *     security:
    *       - Bearer: []
@@ -146,7 +146,7 @@ class AuthController {
    * /api/v1/signup:
    *   post:
    *     tags:
-   *       - FE_Authenticate
+   *       - Customer Auth
    *     summary: Auth Signup
    *     description: User Signup
    *     produces:
@@ -171,9 +171,9 @@ class AuthController {
     const rules = {
       first_name: "required",
       last_name: "required",
-      username: "required|unique:customers,username",
       email: "required|email|unique:customers,email",
-      password: "required"
+      password: "required",
+      phone_number:"required|unique:customers,phone_number"
     };
     const validation = await validate(data, rules);
     if (validation.fails()) {
@@ -202,7 +202,6 @@ class AuthController {
     customer.first_name = data.first_name;
     customer.last_name = data.last_name;
     customer.email = data.email;
-    customer.username = data.username.trim();
     customer.password = await Hash.make(data.password);
     customer.sponsorKey = Helpers.generateKeySponsor();
     customer.sponsor_id = sponsorId;
@@ -212,11 +211,9 @@ class AuthController {
     customer.province = data.province;
     customer.address = data.address;
     customer.gender = data.gender;
-    customer.wallet_address = results.address;
-    customer.wallet_private_key = results.privateKey;
     customer.tow_factor_auth = speakeasy.generateSecret({ length: 20 }).base32;
     customer.is_active = 0;
-    customer.level_commissions = 1;
+    //customer.level_commissions = 1;
     await customer.save(trx);
     var token = Helpers.generateToken();
     customer.customer_token().create({
@@ -243,9 +240,9 @@ class AuthController {
       templateData : ModelSendGird,
       //email data
       drawData: {
-        full_name: customer.getFullNameAttribute(),
+        name: customer.getFullNameAttribute(),
         token: token,
-        CUSTOMER_LINK_ACTIVE_ACCOUNT: Env.get("CUSTOMER_LINK_ACTIVE_ACCOUNT")
+        link_active: Env.get("CUSTOMER_LINK_ACTIVE_ACCOUNT")
       }
     };
     const sendGird = await use("SendGird").sendMail(userData);
@@ -264,7 +261,7 @@ class AuthController {
    * /api/v1/forgot-password:
    *   post:
    *     tags:
-   *       - FE_Authenticate
+   *       - Customer Auth
    *     summary: Auth Forgot
    *     description: User Forgot
    *     produces:
@@ -340,7 +337,7 @@ class AuthController {
    * /api/v1/active-account:
    *   post:
    *     tags:
-   *       - FE_Authenticate
+   *       - Customer Auth
    *     summary: Auth active account
    *     description: Auth active account
    *     produces:
@@ -407,7 +404,7 @@ class AuthController {
    * /api/v1/new-password:
    *   post:
    *     tags:
-   *       - FE_Authenticate
+   *       - Customer Auth
    *     summary: Auth confirmForgot
    *     description: User confirmForgot
    *     produces:
@@ -465,7 +462,7 @@ class AuthController {
    * /api/v1/user-profile:
    *   get:
    *     tags:
-   *       - FE_Authenticate
+   *       - Customer Auth
    *     summary: User Logout
    *     security:
    *       - Bearer: []

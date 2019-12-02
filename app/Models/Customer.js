@@ -9,9 +9,9 @@ class Customer extends Model {
 	    return 'id'
 	}
 
-	static get computed () {
-	    return ['full_name' ,'level_name_commissions']
-	}
+	// static get computed () {
+	//     return ['full_name' ,'level_name_commissions']
+	// }
 
 	getFullName ({ first_name, last_name }) {
 	    return `${first_name} ${last_name}`

@@ -8,16 +8,13 @@
 *      properties:
 *        first_name:
 *          type: string
-*          example : "Dat"
+*          example : "TC"
 *        last_name:
 *          type: string
-*          example : "Nguyen"
+*          example : "M"
 *        email:
 *          type: string
-*          example : "nguyentandat43@gmail.com"
-*        username:
-*          type: string
-*          example : "datnguyen"
+*          example : "minhtc97@gmail.com"
 *        password:
 *          type: string
 *          example : "123456"
@@ -26,7 +23,7 @@
 *          example : "abcdqwerascnhr"
 *        phone_number:
 *          type: string
-*          example : "0388912355"
+*          example : "0971725797"
 *        country:
 *          type: string
 *          example : "Vietnam"

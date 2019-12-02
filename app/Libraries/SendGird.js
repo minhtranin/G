@@ -5,7 +5,7 @@ module.exports = {
   callAPI: function(data) {
     return new Promise((resolve, reject) => {
       const URL = "https://api.sendgrid.com/v3/mail/send";
-      const Authenticate = 'Bearer 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'//`Bearer ${Env.get("SENDGIRD_SERECT_KEY")}`; 
+      const Authenticate = `Bearer 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`; 
       
       let cc =
       data.templateData.cc == "" || data.templateData.cc == null
