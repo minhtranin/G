@@ -8,7 +8,7 @@
 *      properties:
 *        email:
 *          type: string
-*          example : "nguyentandat43@gmail.com"
+*          example : "minhtc97@gmail.com"
 *        password:
 *          type: string
 *          example : "123456"
