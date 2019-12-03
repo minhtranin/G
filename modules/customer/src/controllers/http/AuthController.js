@@ -39,6 +39,7 @@ class AuthController {
    *         description: User Login
    */
   async login({ request, response }) {
+    const speakeasy = require('speakeasy')
     var data = request.all();
     const rules = {
       email: "required",
@@ -53,16 +54,13 @@ class AuthController {
     }
     const customer = await Customer.query()
       .where("email", data.email)
-      .orWhere("username", data.email)
       .first();
     if (customer) {
       if (!customer.is_active) {
-        var token = Helpers.generate_token_reset_password();
-        const password_reset = new PasswordReset();
-        password_reset.email = customer.email;
-        password_reset.token = token;
-        password_reset.type = "customer_active";
-        await password_reset.save();
+        const otp = speakeasy.totp({
+          secret: customer.tow_factor_auth,
+          encoding: 'base32'
+        });
         /* SEND MAIL */
 
         let constTemplateId = use("TemplateId")
@@ -76,7 +74,7 @@ class AuthController {
           templateData : ModelSendGird,
           drawData: {
             full_name: customer.getFullNameAttribute(),
-            token: token,
+            token: otp,
             CUSTOMER_LINK_ACTIVE_ACCOUNT: Env.get(
               "CUSTOMER_LINK_ACTIVE_ACCOUNT"
             )
@@ -84,6 +82,7 @@ class AuthController {
         };
         const sendGird = await use("SendGird").sendMail(userData);
         if (sendGird.status === "success") {
+          var token = Helpers.generate_token_reset_password();
           customer.token = token;
           return response.respondWithSuccess(
             customer,
@@ -109,7 +108,7 @@ class AuthController {
           });
           customer.token = token.access_token;
         }
-        return response.respondWithSuccess(customer, "Login Successful!");
+        return response.respondWithSuccess(customer.toJSON(), "Login Successful!");
       } else {
         return response.respondWithError("Email or password incorrect!");
       }
@@ -169,8 +168,8 @@ class AuthController {
     const { createWallet } = use("App/Libraries/Ethereum");
     var results = await createWallet();
     const rules = {
-      first_name: "required",
-      last_name: "required",
+      fullname:"required",
+      username:"required|unique:customers,username",
       email: "required|email|unique:customers,email",
       password: "required",
       phone_number:"required|unique:customers,phone_number"
@@ -185,18 +184,21 @@ class AuthController {
     
     const trx = await Database.beginTransaction();
     const customer = new Customer();
-    customer.first_name = data.first_name;
-    customer.last_name = data.last_name;
+    customer.fullname = data.fullname;
     customer.email = data.email;
     customer.password = await Hash.make(data.password);
   
     customer.phone_number = data.phone_number;
     customer.customer_code = Helpers.customerCode();
-    customer.country = data.country;
-    customer.province = data.province;
-    customer.address = data.address;
-    customer.gender = data.gender;
+
+
     customer.tow_factor_auth = speakeasy.generateSecret({ length: 20 }).base32;
+    const otp = speakeasy.totp({
+      secret: customer.tow_factor_auth,
+      encoding: 'base32'
+    });
+
+
     customer.is_active = 0;
     //customer.level_commissions = 1;
     await customer.save(trx);
@@ -225,8 +227,8 @@ class AuthController {
       templateData : ModelSendGird,
       //email data
       drawData: {
-        name: customer.getFullNameAttribute(),
-        token: token,
+        name: customer.fullname,
+        token: otp,
         link_active: Env.get("CUSTOMER_LINK_ACTIVE_ACCOUNT")
       }
     };
@@ -234,7 +236,7 @@ class AuthController {
     if (sendGird.status === "success") {
       customer.token = token;
       return response.respondWithSuccess(
-        customer,
+        customer.toJSON(),
         "Please check your email to active account!"
       );
     }
@@ -340,9 +342,11 @@ class AuthController {
    *         description: User confirmForgot
    */
   async activeAccount({ request, response }) {
+    var speakeasy = require("speakeasy");
     var data = request.all();
     const rules = {
-      token: "required"
+      otp: "required",
+      two_factor_auth:"required",
     };
     const validation = await validate(data, rules);
     if (validation.fails()) {
@@ -352,17 +356,21 @@ class AuthController {
       );
     }
     /* RESET PASSWORD */
-    const password_reset = await PasswordReset.query()
-      .where("token", data.token)
-      .where("type", "customer_active")
-      .first();
-    if (password_reset) {
+    var tokenValidates = speakeasy.totp.verify({
+      secret: data.two_factor_auth,
+      encoding: 'base32',
+      token: data.otp,
+      window: 10
+    });
+
+
+    if (tokenValidates) {
       const customer = await Customer.query()
-        .where("email", password_reset.email)
+        .where("tow_factor_auth", data.two_factor_auth)
         .first();
       customer.is_active = 1;
       await customer.save();
-      password_reset.delete();
+     
       const customer_token = await CustomerToken.query()
         .where("customer_id", customer.id)
         .first();
@@ -380,7 +388,7 @@ class AuthController {
         "Active account successfull!"
       );
     } else {
-      return response.respondWithError("Not found account for this email!");
+      return response.respondWithError("OTP code incorrect");
     }
   }
 
@@ -456,10 +464,19 @@ class AuthController {
    *         description: User Logout
    */
   async userProfile({ request, response }) {
-    const customer = await getCurrentCustomer(request.header("Authorization"));
-    if (customer) {
-      return response.respondWithSuccess(customer, "Get Info User Successful!");
-    }
+    const bearer = request.header("Authorization");
+    const token = bearer.replace("Bearer", "")
+    const customerToken = await CustomerToken.query().where('access_token',token).first()
+    if (customerToken) {
+        const customer = await Customer.query()
+            .where('id',customerToken.customer_id)
+            .first()
+            if (customer) {
+              return response.respondWithSuccess(customer.toJSON(), "Get Info User Successful!");
+            }
+          }
+
+    
     return response.respondWithError("Your token invalid!");
   }
 }

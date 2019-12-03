@@ -6,9 +6,12 @@
 *    UserActiveAccount:
 *      type: object
 *      properties:
-*        token:
+*        otp:
 *          type: string
-*          example : "U8lvj5USeFt0H3bq1wOXijkICmzUXL6dKEw6NLvvxTkyLNeHsoY6eRF5luZA"
+*          example : "252911"
+*        two_factor_auth:
+*          type: string
+*          example : "eqweqwe12312312"
 *      required:
 *        - email
 *        - password

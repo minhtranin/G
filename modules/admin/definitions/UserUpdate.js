@@ -9,10 +9,7 @@
 *        id:
 *          type: unit
 *          example : 1
-*        first_name:
-*          type: string
-*          example : "gcom"
-*        last_name:
+*        fullname:
 *          type: string
 *          example : "IcareBase"
 *        phone_number:
