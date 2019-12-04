@@ -60,6 +60,7 @@ const aliases = {
   TemplateId : 'App/Libraries/TemplateSendgird',
   SendGird : 'App/Libraries/SendGird',
   ModelSendGird : 'App/Models/SendGird',
+  AmazonS3:'App/Libraries/AmazonS3'
 }
 
 

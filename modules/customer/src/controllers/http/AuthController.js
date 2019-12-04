@@ -15,6 +15,7 @@ const MessageCode = use("App/Libraries/MessageCode");
 const Queue = use("Queue");
 const { getCurrentCustomer } = use("App/Libraries/TraitsHelpers");
 const Setting = use("App/Models/Setting");
+const AmazonS3 = use('AmazonS3')
 class AuthController {
   /**
    * @swagger
@@ -140,33 +141,58 @@ class AuthController {
     return response.respondWithSuccess([], "Logout Successful!");
   }
 
-  /**
-   * @swagger
-   * /api/v1/signup:
-   *   post:
-   *     tags:
-   *       - Customer Auth
-   *     summary: Auth Signup
-   *     description: User Signup
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - name: info
-   *         description: User object
-   *         in:  body
-   *         required: true
-   *         type: string
-   *         schema:
-   *           $ref: '#/definitions/UserSignUp'
-   *     responses:
-   *       200:
-   *         description: User Login
-   */
+ /**
+      * @swagger
+      * /api/v1/signup:
+      *   post:
+      *     tags:
+      *       - Customer Auth 
+      *     summary: Create account
+      *     consumes:
+      *       - multipart/form-data
+      *     security:
+      *       - Bearer: []
+      *     produces:
+      *       - application/json
+      *     parameters:
+     *       - in: formData
+      *         name: avatar
+      *         type: file
+      *         description: The file image to upload.
+      *       - name: fullname 
+      *         description: fullname 
+      *         in:  query
+      *         required: true
+      *         type: string
+      *         example: "TCM"
+      *       - name: username 
+      *         description: your username
+      *         in:  query
+      *         type: string
+      *         example: "minhtranin"
+      *       - name: email 
+      *         description: your email account
+      *         in:  query
+      *         type: string
+      *         example: "minhtc97@gmail.com"
+      *       - name: password 
+      *         description: password account
+      *         in:  query
+      *         type: string
+      *         example: "123456"
+      *       - name: phone_number 
+      *         description: phone account
+      *         in:  query
+      *         type: string
+      *         example: "0971725797"
+      *          
+      *     responses:
+      *       200:
+      *         description: Add account Successful
+      */
   async signup({ request, response }) {
     var speakeasy = require("speakeasy");
     var data = request.all();
-    const { createWallet } = use("App/Libraries/Ethereum");
-    var results = await createWallet();
     const rules = {
       fullname:"required",
       username:"required|unique:customers,username",
@@ -181,9 +207,23 @@ class AuthController {
         validation.messages()
       );
     }
+
     
     const trx = await Database.beginTransaction();
     const customer = new Customer();
+    await request.multipart.file('avatar', {}, async (file) => {
+      file.ContentType = 'image/png'
+      const amazon = new AmazonS3()
+      try {
+          const fileAmz = await amazon.upload(file)
+          customer.avatar = fileAmz.Location
+
+      } catch (err) {
+          return response.respondWithError(err)
+      }
+  }
+  )
+  await request.multipart.process()
     customer.fullname = data.fullname;
     customer.email = data.email;
     customer.password = await Hash.make(data.password);
@@ -234,12 +274,14 @@ class AuthController {
     };
     const sendGird = await use("SendGird").sendMail(userData);
     if (sendGird.status === "success") {
+      console.log('hear')
       customer.token = token;
       return response.respondWithSuccess(
         customer.toJSON(),
         "Please check your email to active account!"
       );
     }
+    
     return response.respondWithError("Error Server internal!");
   }
 
