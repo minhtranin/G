@@ -2,6 +2,12 @@
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
+Route.group(()=>{
+  Route.post('/create','@provider:Frontend/PostController.create')
+})
+.prefix('api/v1/customer/post')
+
+
 
 Route.group(() => {
   	Route.post('/login','@provider:Frontend/AuthController.login')

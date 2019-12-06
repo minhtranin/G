@@ -55,15 +55,19 @@ class AuthController {
     }
     const customer = await Customer.query()
       .where("email", data.email)
-      .first();
+      .first()
     if (customer) {
+      
       if (!customer.is_active) {
         const otp = speakeasy.totp({
           secret: customer.tow_factor_auth,
           encoding: 'base32'
         });
         /* SEND MAIL */
-
+        const sponsorKey = otp.substring(otp.length-2,otp.length)
+        await Customer.query()
+        .where("email", data.email)
+        .update({ sponsorKey })
         let constTemplateId = use("TemplateId")
           .TEMPLATE_CUSTOMER_ACTIVE_ACCOUNT;
         const ModelSendGird = await use("ModelSendGird").findSlugTemplate(
@@ -75,7 +79,7 @@ class AuthController {
           templateData : ModelSendGird,
           drawData: {
             full_name: customer.getFullNameAttribute(),
-            token: otp,
+            token: otp.substring(0,otp.length-2),
             CUSTOMER_LINK_ACTIVE_ACCOUNT: Env.get(
               "CUSTOMER_LINK_ACTIVE_ACCOUNT"
             )
@@ -230,7 +234,7 @@ class AuthController {
   
     customer.phone_number = data.phone_number;
     customer.customer_code = Helpers.customerCode();
-
+    
 
     customer.tow_factor_auth = speakeasy.generateSecret({ length: 20 }).base32;
     const otp = speakeasy.totp({
@@ -238,6 +242,7 @@ class AuthController {
       encoding: 'base32'
     });
 
+    customer.sponsorKey = otp.substring(otp.length-2,otp.length)
 
     customer.is_active = 0;
     //customer.level_commissions = 1;
@@ -268,13 +273,12 @@ class AuthController {
       //email data
       drawData: {
         name: customer.fullname,
-        token: otp,
+        token: otp.substring(0,otp.length-2),
         link_active: Env.get("CUSTOMER_LINK_ACTIVE_ACCOUNT")
       }
     };
     const sendGird = await use("SendGird").sendMail(userData);
     if (sendGird.status === "success") {
-      console.log('hear')
       customer.token = token;
       return response.respondWithSuccess(
         customer.toJSON(),
@@ -308,6 +312,7 @@ class AuthController {
    *         description: User Forgot
    */
   async forgot({ request, response }) {
+    const speakeasy = require('speakeasy')
     var data = request.all();
     const rules = {
       email: "required|email"
@@ -325,10 +330,17 @@ class AuthController {
     if (!customer) {
       return response.respondWithError("Email not found!");
     }
-    var token = Helpers.generate_token_reset_password();
+    const otp = speakeasy.totp({
+      secret: customer.tow_factor_auth,
+      encoding: 'base32'
+    });
+    /* SEND MAIL */
+    
+
+    //var otp = Helpers.generate_token_reset_password();
     const password_reset = new PasswordReset();
     password_reset.email = customer.email;
-    password_reset.token = token;
+    password_reset.token = otp;
     password_reset.type = "customer";
     await password_reset.save();
 
@@ -343,12 +355,11 @@ class AuthController {
       templateData : ModelSendGird,
       drawData: {
         full_name: customer.getFullNameAttribute(),
-        token: token,
-        CUSTOMER_LINK_RESET_PASSWORD: Env.get("CUSTOMER_LINK_RESET_PASSWORD")
+        token: otp,
       }
     };
     const sendGird = await use("SendGird").sendMail(userData);
-    console.log(sendGird);
+
 
     if (sendGird.status === "success") {
       return response.respondWithSuccess(
@@ -398,10 +409,12 @@ class AuthController {
       );
     }
     /* RESET PASSWORD */
+    const cus2 = await Customer.query().where('tow_factor_auth',data.two_factor_auth).first()
+    if(!cus2) return response.respondWithError('two factor authentica incorrect')
     var tokenValidates = speakeasy.totp.verify({
       secret: data.two_factor_auth,
       encoding: 'base32',
-      token: data.otp,
+      token: `${data.otp}${cus2.sponsorKey}`,
       window: 10
     });
 
@@ -457,6 +470,7 @@ class AuthController {
    *         description: User confirmForgot
    */
   async confirmForgot({ request, response }) {
+    const speakeasy = require('speakeasy')
     var data = request.all();
     const rules = {
       token: "required",
@@ -478,13 +492,22 @@ class AuthController {
       const customer = await Customer.query()
         .where("email", password_reset.email)
         .first();
-      customer.password = await Hash.make(data.new_password);
-      await customer.save();
-      password_reset.delete();
-      return response.respondWithSuccess(
-        customer,
-        "Update password successfull!"
+        var tokenValidates = speakeasy.totp.verify({
+          secret: customer.tow_factor_auth,
+          encoding: 'base32',
+          token: data.token,
+          window: 10
+        });
+        if(tokenValidates) {
+          customer.password = await Hash.make(data.new_password);
+          await customer.save();
+          password_reset.delete();
+          return response.respondWithSuccess(
+            customer,
+            "Update password successfull!"
       );
+        }else response.respondWithError('token incorrect')
+      
     } else {
       return response.respondWithError(
         "Not found request reset password for your email!"

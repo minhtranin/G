@@ -8,7 +8,7 @@
 *      properties:
 *        token:
 *          type: string
-*          example : "U8lvj5USeFt0H3bq1wOXijkICmzUXL6dKEw6NLvvxTkyLNeHsoY6eRF5luZA"
+*          example : "023883"
 *        new_password:
 *          type: string
 *          example : "123456"

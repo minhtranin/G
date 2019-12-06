@@ -17,7 +17,7 @@ module.exports = {
   options: {
     swaggerDefinition: {
       info: {
-        title: 'CMS Swagger',
+        title: 'GC Swagger',
         version: '1.0.0',
       },
       basePath: '/',
@@ -58,7 +58,9 @@ module.exports = {
     // ]
     apis: [
       'modules/admin/src/controllers/http/AuthController.js',
+      'modules/customer/src/controllers/http/BoxChatController.js',
       'modules/customer/src/controllers/http/AuthController.js',
+      'modules/customer/src/controllers/http/PostController.js',
       'app/Definitions/**/*.js',
       'start/routes.js',
       'modules/*/definitions/**/*.js',
