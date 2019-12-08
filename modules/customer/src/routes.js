@@ -99,3 +99,15 @@ Route.group(() => {
 })
 .prefix('api/v1')
 
+/* POST CUSTOMER*/
+Route.group(() => {
+  
+  Route.post('/create','@provider:Frontend/PostController.create')
+  Route.post('/update','@provider:Frontend/PostController.update')
+  Route.get('/delete','@provider:Frontend/PostController.delete')
+  Route.get('/react','@provider:Frontend/PostController.react')
+  Route.get('/category/list','@provider:Frontend/PostController.categoryList')
+  Route.get('/features/list','@provider:Frontend/PostController.featuresList')
+  Route.get('/condition/list','@provider:Frontend/PostController.conditionList')
+})
+.prefix('/api/v1/customer/post')

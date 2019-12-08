@@ -1,7 +1,10 @@
 'use strict'
+
+
+class PostController{
 /**
       * @swagger
-      * api/v1/customer/post/create:
+      * /api/v1/customer/post/create:
       *   post:
       *     tags:
       *       - Customer Post 
@@ -48,12 +51,9 @@
       *       200:
       *         description: Add account Successful
       */
-
-class PostController{
-
     async create({request,response}){
         const data = request.all()
-        return response
+        return response.respondWithSuccess('ok')
     }
     /**
    * @swagger
@@ -106,6 +106,51 @@ class PostController{
         const data = request.all()
         return response
     }
+    /**
+   * @swagger
+   * api/v1/customer/post/category/list:
+   *   get:
+   *     tags:
+   *       - Customer Post
+   *     summary: list post category
+   *     responses:
+   *       200:
+   *         description: show all list post category
+   */
+    async categoryList({request,response}){
+        const data = request.all()
+        return response
+    }
+/**
+   * @swagger
+   * api/v1/customer/post/features/list:
+   *   get:
+   *     tags:
+   *       - Customer Post
+   *     summary: list post features
+   *     responses:
+   *       200:
+   *         description: show all list post features
+   */
+  async featuresList({request,response}){
+    const data = request.all()
+    return response.respondWithSuccess('ok')
+}
+/**
+   * @swagger
+   * api/v1/customer/post/condition/list:
+   *   get:
+   *     tags:
+   *       - Customer Post
+   *     summary: list post condition
+   *     responses:
+   *       200:
+   *         description: show all list post condition
+   */
+  async conditionList({request,response}){
+    const data = request.all()
+    return response.respondWithSuccess('ok')
+}
     
 }
 module.exports = PostController
