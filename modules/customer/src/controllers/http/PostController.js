@@ -1,5 +1,11 @@
 'use strict'
-
+const Category = use("App/Models/Category");
+const Condition = use("App/Models/Condition");
+const Feature = use("App/Models/Feature");
+const Post = use ('App/Models/Post')
+const Helpers = use('Helpers')
+const AmazonS3 = use('AmazonS3')
+const Customer = use('App/Models/Customer')
 
 class PostController{
 /**
@@ -17,47 +23,96 @@ class PostController{
       *       - application/json
       *     parameters:
      *       - in: formData
-      *         name: avatar
-      *         type: file
-      *         description: The file image to upload.
-      *       - name: fullname 
-      *         description: fullname 
+      *         name: images
+      *         type: file[]
+      *         description: The  image post
+      *       - name: title 
+      *         description: title post
       *         in:  query
       *         required: true
       *         type: string
-      *         example: "TCM"
-      *       - name: username 
-      *         description: your username
+      *         example: "BMW i3"
+      *       - name: description 
+      *         description: description post
       *         in:  query
       *         type: string
-      *         example: "minhtranin"
-      *       - name: email 
-      *         description: your email account
+      *         example: "the new car"
+      *       - name: id_category 
+      *         description: id_category from api categort list
+      *         in:  query
+      *         type: interger
+      *         example: 1
+      *       - name: id_features 
+      *         description: id features from api categort list
+      *         in:  query
+      *         type: interger
+      *         example: 1
+      *       - name: id_condition 
+      *         description: id condition from api categort list
+      *         in:  query
+      *         type: interger
+      *         example: 1
+      *       - name: price 
+      *         description: price this products 
+      *         in:  query
+      *         type: interger
+      *         example: 1
+      *       - name: location 
+      *         description: location this post 
       *         in:  query
       *         type: string
-      *         example: "minhtc97@gmail.com"
-      *       - name: password 
-      *         description: password account
+      *         example: '32:12'
+      *       - name: type_post 
+      *         description: type of post  0 urgent 1 featured 2 regular
       *         in:  query
-      *         type: string
-      *         example: "123456"
-      *       - name: phone_number 
-      *         description: phone account
+      *         type: interger
+      *         example: 2
+      *       - name: to_exchange 
+      *         description: type of post exchange 0 not 1
       *         in:  query
-      *         type: string
-      *         example: "0971725797"
+      *         type: interger
+      *         example: 1
       *          
       *     responses:
       *       200:
-      *         description: Add account Successful
+      *         description: Add post Successful
       */
     async create({request,response}){
         const data = request.all()
-        return response.respondWithSuccess('ok')
+        const checkIDCategory = await Category.find(data.id_category)
+        const checkIDFeatured = await Feature.find(data.id_features)
+        const checkIDCondition = await Condition.find(data.id_condition)
+        if(!checkIDCategory ){
+            return response.respondWithError('id category not exist')
+        }else if(!checkIDCondition){
+            return response.respondWithError('id condition not exist')
+        }else if (!checkIDFeatured){
+            return response.respondWithError('id featured not exist')
+        }
+        const profilePics = request.file('images', {
+            types: ['image'],
+            size: '2mb'
+          })
+        if(profilePics){
+          await profilePics.moveAll(Helpers.tmpPath('uploads'), (file) => {
+            return {
+              name: `${new Date().getTime()}/${new Date().getTime()}.${file.subtype}`
+            }
+          })
+        
+          if (!profilePics.movedAll()) {
+            return response.respondWithError('Validation is failed', profilePic.error())
+          }
+          if (profilePics != null) {
+            data.images =  profilePics.fileName
+        }
+    }
+        const post =await Post.create(data)
+        return response.respondWithSuccess(post.toJSON(),'Add post Successful')
     }
     /**
    * @swagger
-   * api/v1/customer/post/update:
+   * /api/v1/customer/post/update:
    *   put:
    *     tags:
    *       - Customer Post
@@ -68,10 +123,10 @@ class PostController{
    *       200:
    *         description: User Logout
    */
-    async update({request,response}){
-        const data = request.all()
-        return response
-    }
+      async update({ request, response }) {
+        
+        
+      }
     /**
    * @swagger
    * api/v1/customer/post/delete:
@@ -108,7 +163,7 @@ class PostController{
     }
     /**
    * @swagger
-   * api/v1/customer/post/category/list:
+   * /api/v1/customer/post/category/list:
    *   get:
    *     tags:
    *       - Customer Post
@@ -119,11 +174,12 @@ class PostController{
    */
     async categoryList({request,response}){
         const data = request.all()
-        return response
+        const category =await Category.query().fetch()
+        return response.respondWithSuccess(category.toJSON(),'show all list post category')
     }
 /**
    * @swagger
-   * api/v1/customer/post/features/list:
+   * /api/v1/customer/post/features/list:
    *   get:
    *     tags:
    *       - Customer Post
@@ -134,11 +190,12 @@ class PostController{
    */
   async featuresList({request,response}){
     const data = request.all()
-    return response.respondWithSuccess('ok')
+        const features =await Feature.query().fetch()
+        return response.respondWithSuccess(features.toJSON(),'show all list post features')
 }
 /**
    * @swagger
-   * api/v1/customer/post/condition/list:
+   * /api/v1/customer/post/condition/list:
    *   get:
    *     tags:
    *       - Customer Post
@@ -149,7 +206,8 @@ class PostController{
    */
   async conditionList({request,response}){
     const data = request.all()
-    return response.respondWithSuccess('ok')
+    const condition =await Condition.query().fetch()
+        return response.respondWithSuccess(condition.toJSON(),'show all list post features')
 }
     
 }

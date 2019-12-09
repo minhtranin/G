@@ -12,6 +12,21 @@
 *      required:
 *        - email
 */
+/** 
+*  @swagger
+*  definitions:
+*    boxchat:
+*      type: object
+*      properties:
+*        message:
+*          type: string
+*          example : "hi can u communicate each other"
+*        id_vendor:
+*          type: interger
+*          example : 1
+*      required:
+*        - email
+*/
 class UserForgotPassword{
 
 }

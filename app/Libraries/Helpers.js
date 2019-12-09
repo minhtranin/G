@@ -8,9 +8,9 @@ class Helpers{
         var token = Env.get('APP_NAME','icarebase') +'-' + uid.generate(limit)
         return token
     }
-    static generateKeySponsor(limit = 7) {
+    static generateKeySponsor(limit = 12) {
         var uid = require('rand-token')
-        var token = 'ICB' + uid.generate(limit)
+        var token = 'GCOM' + uid.generate(limit)
         return token
     }
 
