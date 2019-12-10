@@ -113,3 +113,11 @@ Route.group(() => {
 .prefix('/api/v1/customer/post')
 
 Route.post('/create','@provider:Frontend/BoxChatController.create').prefix('/api/v1/customer/box-chat')
+
+/*HOME */
+Route.group(()=>{
+  Route.get('/home','@provider:Frontend/HomeController.home')
+  Route.get('/feed','@provider:Frontend/HomeController.feed')
+  
+})
+.prefix('/api/v1/customer')

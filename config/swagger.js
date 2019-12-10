@@ -61,6 +61,7 @@ module.exports = {
       'modules/customer/src/controllers/http/BoxChatController.js',
       'modules/customer/src/controllers/http/AuthController.js',
       'modules/customer/src/controllers/http/PostController.js',
+      'modules/customer/src/controllers/http/HomeController.js',
       'app/Definitions/**/*.js',
       'start/routes.js',
       'modules/*/definitions/**/*.js',

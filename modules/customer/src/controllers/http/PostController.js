@@ -146,21 +146,79 @@ class PostController{
     }
     /**
    * @swagger
-   * api/v1/customer/post/react:
-   *   get:
+   * api/v1/customer/post/like/create:
+   *   post:
    *     tags:
    *       - Customer Post
-   *     summary: User Logout
+   *     summary: like create
    *     security:
    *       - Bearer: []
+    *     parameters:
+    *       - name: data
+    *         description: message inbox
+    *         in:  body
+    *         required: true
+    *         type: json
+    *         schema:
+    *           $ref: '#/definitions/likecreate'
    *     responses:
    *       200:
-   *         description: User Logout
+   *         description: liked 
    */
-    async react({request,response}){
+    async createLike({request,response}){
         const data = request.all()
         return response
     }
+    /**
+   * @swagger
+   * api/v1/customer/post/comment/create:
+   *   post:
+   *     tags:
+   *       - Customer Post
+   *     summary: Comment create
+     *     security:
+   *       - Bearer: []
+    *     parameters:
+    *       - name: data
+    *         description: message inbox
+    *         in:  body
+    *         required: true
+    *         type: json
+    *         schema:
+    *           $ref: '#/definitions/likelist'
+   *     responses:
+   *       200:
+   *         description: show list like 
+   */
+  async createComment({request,response}){
+    const data = request.all()
+    return response
+}
+    /**
+   * @swagger
+   * api/v1/customer/post/share/create:
+   *   post:
+   *     tags:
+   *       - Customer Post
+   *     summary: Share Create
+     *     security:
+   *       - Bearer: []
+    *     parameters:
+    *       - name: data
+    *         description: share create
+    *         in:  body
+    *         required: true
+    *         type: json
+    *         schema:
+    *           $ref: '#/definitions/Sharecreate'
+   *     responses:
+   *       200:
+   *         description: commented
+   */
+  async createComment({request,response}){
+    const data = request.all()
+    return response
+}
     /**
    * @swagger
    * /api/v1/customer/post/category/list:
