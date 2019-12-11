@@ -185,7 +185,7 @@ class PostController{
     *         required: true
     *         type: json
     *         schema:
-    *           $ref: '#/definitions/likelist'
+    *           $ref: '#/definitions/Commentcreate'
    *     responses:
    *       200:
    *         description: show list like 
@@ -215,7 +215,7 @@ class PostController{
    *       200:
    *         description: commented
    */
-  async createComment({request,response}){
+  async createShare({request,response}){
     const data = request.all()
     return response
 }
